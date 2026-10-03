@@ -85,6 +85,22 @@ void loop() {
 }
 ```
 
+## Hasil simulasi
+
+![Timeline tahap lampu lalu lintas selama 25 detik: merah 5 detik, hijau 4 detik, kuning 1 detik, dengan penanda baruMasuk()](extras/gambar/lampu-lalu-lintas.svg)
+
+Contoh `LampuLaluLintas` dijalankan 25 detik. Tiap tahap berlangsung sesuai `pindahSetelah()`, dan `baruMasuk()` true tepat sekali di awal tiap tahap, tempat LED dinyalakan.
+
+![Angka sensor tanah, batas kering 600, dan tahap MEMANTAU, MENYIRAM, MERESAP pada contoh PenyiramTanaman](extras/gambar/penyiram-tanaman.svg)
+
+Contoh `PenyiramTanaman` dengan tanah tiruan (mengering dipercepat, air butuh 3 detik meresap ke sensor). Penyiraman pertama berhenti karena tanah sudah basah setelah 3,8 detik. Setelah tangki kosong, tanah tidak pernah basah, dan pompa dimatikan oleh batas `pindahSetelah(MERESAP, 10000)`.
+
+Grafik dibuat dari simulasi di PC yang menjalankan kode library ini (`extras/simulasi`):
+```sh
+cd extras/simulasi
+python gambar.py   # butuh g++ dan matplotlib
+```
+
 ## Referensi fungsi
 
 | Fungsi | Keterangan |

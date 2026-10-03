@@ -38,6 +38,18 @@ void loop() {
 
 From the source of popular English libraries: arduino-fsm (`realloc`), SimpleFSM, StateMachine (jrullan), and StateMachineLib (`new`) all allocate on the heap and are built around callbacks or transition tables. YASM avoids the heap but needs one function per state.
 
+## Simulation results
+
+![Traffic light stages over 25 seconds with baruMasuk() markers](extras/gambar/lampu-lalu-lintas.svg)
+
+The `LampuLaluLintas` example run for 25 s: each stage lasts exactly as set by `pindahSetelah()`, and `baruMasuk()` (just entered) is true once at the start of each stage.
+
+![Soil sensor reading and watering stages in the PenyiramTanaman example](extras/gambar/penyiram-tanaman.svg)
+
+The `PenyiramTanaman` example with simulated soil. The first watering stops when the soil is wet (3.8 s). Once the tank is empty the soil never gets wet, and the 10 s `pindahSetelah()` limit switches the pump off.
+
+The plots come from a PC simulation that runs this library's code (`extras/simulasi`): `cd extras/simulasi && python gambar.py` (needs g++ and matplotlib).
+
 ## Function reference
 
 | Indonesian | English | Notes |
