@@ -105,7 +105,7 @@ python gambar.py   # butuh g++ dan matplotlib
 
 Diukur dengan simavr (simulator ATmega328P yang akurat per siklus) di Arduino Uno 16 MHz: dua tahap yang bergantian setiap 1 detik, aksi di awal tiap tahap. "Menunggu" adalah satu putaran `loop()` saat belum waktunya pindah (paling sering); "pindah" memajukan `millis()` 1 detik di setiap panggilan (±24 siklus ikut terhitung). Pesaing diberi mesin yang sama dengan cara masing-masing (callback dan transisi berwaktu).
 
-| | AlurProgram 1.0.0 | arduino-fsm 2.2.0 | SimpleFSM 1.3.1 | YASM 1.0.5 |
+| | AlurProgram 1.0.1 | arduino-fsm 2.2.0 | SimpleFSM 1.3.1 | YASM 1.0.5 |
 |---|---|---|---|---|
 | Menunggu | 68 siklus (4 µs) | 185 | 230 | 80 |
 | Pindah tahap | 118 (7 µs) | 387 | 312 | 120 |
@@ -184,7 +184,7 @@ g++ -std=c++11 -I. -I../../src uji.cpp ../../src/AlurProgram.cpp -o uji && ./uji
 
 ## Status
 
-Versi 1.0.0 sudah lolos uji logika otomatis dan compile di 7 board. Library ini murni perangkat lunak (hanya memakai `millis()`). Jika menemukan masalah, silakan buka *issue* di GitHub.
+Versi 1.0.1 sudah lolos uji logika otomatis dan compile di 7 board. Library ini murni perangkat lunak (hanya memakai `millis()`). Jika menemukan masalah, silakan buka *issue* di GitHub.
 
 ## Lisensi
 

@@ -54,7 +54,7 @@ The plots come from a PC simulation that runs this library's code (`extras/simul
 
 Measured with simavr (cycle-accurate ATmega328P simulator), Arduino Uno 16 MHz: two stages alternating every second, an action on entering each stage. Cycles per `loop()` pass.
 
-| | AlurProgram 1.0.0 | arduino-fsm 2.2.0 | SimpleFSM 1.3.1 | YASM 1.0.5 |
+| | AlurProgram 1.0.1 | arduino-fsm 2.2.0 | SimpleFSM 1.3.1 | YASM 1.0.5 |
 |---|---|---|---|---|
 | Waiting | 68 (4 µs) | 185 | 230 | 80 |
 | Changing stage | 118 (7 µs) | 387 | 312 | 120 |
@@ -81,7 +81,7 @@ All functions are O(1): the stage is a number and `switch` compiles to a direct 
 
 ## Status
 
-Version 1.0.0 passes automated logic tests and compiles on Uno, Mega, ESP32, ESP32-C3, ESP32-S3, STM32 Blackpill F411, and Bluepill F103. It is pure software and only uses `millis()`.
+Version 1.0.1 passes automated logic tests and compiles on Uno, Mega, ESP32, ESP32-C3, ESP32-S3, STM32 Blackpill F411, and Bluepill F103. It is pure software and only uses `millis()`.
 
 ## License
 
