@@ -91,15 +91,30 @@ void loop() {
 
 Contoh `LampuLaluLintas` dijalankan 25 detik. Tiap tahap berlangsung sesuai `pindahSetelah()`, dan `baruMasuk()` true tepat sekali di awal tiap tahap, tempat LED dinyalakan.
 
-![Angka sensor tanah, batas kering 600, dan tahap MEMANTAU, MENYIRAM, MERESAP pada contoh PenyiramTanaman](extras/gambar/penyiram-tanaman.svg)
+![Angka sensor tanah, batas mulai 600 dan berhenti 550, dan tahap MEMANTAU, MENYIRAM, MERESAP pada contoh PenyiramTanaman](extras/gambar/penyiram-tanaman.svg)
 
-Contoh `PenyiramTanaman` dengan tanah tiruan (mengering dipercepat, air butuh 3 detik meresap ke sensor). Penyiraman pertama berhenti karena tanah sudah basah setelah 3,8 detik. Setelah tangki kosong, tanah tidak pernah basah, dan pompa dimatikan oleh batas `pindahSetelah(MERESAP, 10000)`.
+Contoh `PenyiramTanaman` dengan tanah tiruan (mengering dipercepat, air butuh 3 detik meresap ke sensor). Pompa mulai di atas 600 dan baru berhenti di bawah 550 (histeresis), jadi angka yang bergoyang di sekitar satu batas tidak membuat pompa menyala-mati. Penyiraman pertama berhenti karena tanah sudah basah setelah 6,1 detik. Setelah tangki kosong, tanah tidak pernah basah, dan pompa dimatikan oleh batas `pindahSetelah(MERESAP, 10000)`.
 
 Grafik dibuat dari simulasi di PC yang menjalankan kode library ini (`extras/simulasi`):
 ```sh
 cd extras/simulasi
 python gambar.py   # butuh g++ dan matplotlib
 ```
+
+## Kecepatan & memori
+
+Diukur dengan simavr (simulator ATmega328P yang akurat per siklus) di Arduino Uno 16 MHz: dua tahap yang bergantian setiap 1 detik, aksi di awal tiap tahap. "Menunggu" adalah satu putaran `loop()` saat belum waktunya pindah (paling sering); "pindah" memajukan `millis()` 1 detik di setiap panggilan (±24 siklus ikut terhitung). Pesaing diberi mesin yang sama dengan cara masing-masing (callback dan transisi berwaktu).
+
+| | AlurProgram 1.0.0 | arduino-fsm 2.2.0 | SimpleFSM 1.3.1 | YASM 1.0.5 |
+|---|---|---|---|---|
+| Menunggu | 68 siklus (4 µs) | 185 | 230 | 80 |
+| Pindah tahap | 118 (7 µs) | 387 | 312 | 120 |
+| RAM (mesin + tahap + transisi) | 7 B | 23 B + `realloc` | 116 B | 13 B |
+| Flash sketch yang sama | 4.156 B | 5.740 B | 8.338 B | 4.378 B |
+
+`tahap()`, `baruMasuk()`, `pindah()`, `pindahSetelah()` semuanya O(1) waktu dan memori, karena tahap hanya sebuah angka dan pemilihan tahap adalah `switch` biasa yang dikompilasi menjadi lompatan langsung. Tidak ada yang perlu dioptimasi lagi; pesaing kalah karena memanggil callback lewat pointer dan memeriksa daftar transisi di setiap putaran.
+
+Mengulang pengukuran: sketch `extras/benchmark/AlurProgramBenchmark` (butuh simavr). StateMachine (jrullan) tidak diukur karena butuh library LinkedList terpisah.
 
 ## Referensi fungsi
 

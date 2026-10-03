@@ -78,7 +78,9 @@ def grafik_penyiram(baris):
     fig, (ax, ax2) = plt.subplots(2, 1, sharex=True, figsize=(8, 4.2),
                                   gridspec_kw={"height_ratios": [4, 1], "hspace": 0.08})
     ax.axhline(600, color=WARNA["target"], ls="--", lw=1.2)
-    ax.text(t[-1], 603, "batas kering 600", ha="right", va="bottom", color=WARNA["target"], fontsize=9)
+    ax.text(95, 603, "mulai siram > 600", ha="center", va="bottom", color=WARNA["target"], fontsize=9)
+    ax.axhline(550, color=WARNA["target"], ls=":", lw=1.2)
+    ax.text(95, 553, "berhenti < 550", ha="center", va="bottom", color=WARNA["target"], fontsize=9)
     ax.axvline(kosong, color=WARNA["pembanding"], lw=1.2)
     ax.text(kosong + 1, 470, "tangki kosong", color=WARNA["pembanding"], va="bottom", fontsize=9)
     ax.plot(t, sensor, color=WARNA["utama"])
@@ -88,7 +90,7 @@ def grafik_penyiram(baris):
         lama.append((b - m, alasan))
     (b0, _), (b1, _) = berhenti[0], berhenti[1]
     nilai = lambda w: min(zip(t, sensor), key=lambda d: abs(d[0] - w))[1]
-    ax.annotate(f"tanah basah:\npompa mati setelah {koma(lama[0][0])} s", (b0, nilai(b0)), xytext=(14, 30),
+    ax.annotate(f"tanah basah:\npompa mati setelah {koma(lama[0][0])} s", (b0, nilai(b0)), xytext=(40, -12), va="top",
                 textcoords="offset points", fontsize=9, arrowprops={"arrowstyle": "-", "color": "#6b7280"})
     ax.annotate(f"masih kering:\npompa dimatikan di {koma(lama[1][0])} s", (b1, nilai(b1)), xytext=(24, -40), va="top",
                 textcoords="offset points", fontsize=9, arrowprops={"arrowstyle": "-", "color": "#6b7280"})

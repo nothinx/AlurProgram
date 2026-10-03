@@ -46,9 +46,22 @@ The `LampuLaluLintas` example run for 25 s: each stage lasts exactly as set by `
 
 ![Soil sensor reading and watering stages in the PenyiramTanaman example](extras/gambar/penyiram-tanaman.svg)
 
-The `PenyiramTanaman` example with simulated soil. The first watering stops when the soil is wet (3.8 s). Once the tank is empty the soil never gets wet, and the 10 s `pindahSetelah()` limit switches the pump off.
+The `PenyiramTanaman` example with simulated soil. The pump starts above 600 and stops only below 550 (hysteresis), so a reading wobbling around one threshold cannot toggle it. The first watering stops when the soil is wet (6.1 s). Once the tank is empty the soil never gets wet, and the 10 s `pindahSetelah()` limit switches the pump off.
 
 The plots come from a PC simulation that runs this library's code (`extras/simulasi`): `cd extras/simulasi && python gambar.py` (needs g++ and matplotlib).
+
+## Speed & memory
+
+Measured with simavr (cycle-accurate ATmega328P simulator), Arduino Uno 16 MHz: two stages alternating every second, an action on entering each stage. Cycles per `loop()` pass.
+
+| | AlurProgram 1.0.0 | arduino-fsm 2.2.0 | SimpleFSM 1.3.1 | YASM 1.0.5 |
+|---|---|---|---|---|
+| Waiting | 68 (4 µs) | 185 | 230 | 80 |
+| Changing stage | 118 (7 µs) | 387 | 312 | 120 |
+| RAM | 7 B | 23 B + `realloc` | 116 B | 13 B |
+| Flash, same sketch | 4,156 B | 5,740 B | 8,338 B | 4,378 B |
+
+All functions are O(1): the stage is a number and `switch` compiles to a direct jump. Benchmark sketch: `extras/benchmark/AlurProgramBenchmark`.
 
 ## Function reference
 

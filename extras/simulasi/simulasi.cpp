@@ -68,16 +68,16 @@ void fisika() {
   sensor += (lama - sensor) * DT / 2.0f;
 }
 
-const int BATAS_KERING = 600;
+const int MULAI_SIRAM = 600, BERHENTI_SIRAM = 550;
 enum { MEMANTAU, MENYIRAM, MERESAP };
 AlurProgram penyiram(MEMANTAU);
 
-bool tanahKering() { return (int)sensor > BATAS_KERING; } // analogRead(SENSOR_TANAH)
+int bacaTanah() { return (int)sensor; } // analogRead(SENSOR_TANAH)
 
 void loop() {
   switch (penyiram.tahap()) {
     case MEMANTAU:
-      if (tanahKering()) penyiram.pindah(MENYIRAM);
+      if (bacaTanah() > MULAI_SIRAM) penyiram.pindah(MENYIRAM);
       break;
 
     case MENYIRAM:
@@ -85,7 +85,7 @@ void loop() {
         pompa = true;
         printf("mulai,%u,,\n", (unsigned)waktuPalsu);
       }
-      if (!tanahKering()) { penyiram.pindah(MERESAP); printf("berhenti,%u,basah\n", (unsigned)waktuPalsu); }
+      if (bacaTanah() < BERHENTI_SIRAM) { penyiram.pindah(MERESAP); printf("berhenti,%u,basah\n", (unsigned)waktuPalsu); }
       else if (penyiram.pindahSetelah(MERESAP, 10000)) printf("berhenti,%u,batas\n", (unsigned)waktuPalsu);
       break;
 
