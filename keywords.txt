@@ -1,0 +1,12 @@
+#######################################
+# AlurProgram
+#######################################
+
+AlurProgram	KEYWORD1
+
+tahap	KEYWORD2
+tahapSebelumnya	KEYWORD2
+baruMasuk	KEYWORD2
+lamaDiTahap	KEYWORD2
+pindah	KEYWORD2
+pindahSetelah	KEYWORD2
